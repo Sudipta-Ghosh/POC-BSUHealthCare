@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Message type="ORU" id="K172">
+<Patient id="PATID1234^5^M11" gender="M" religion="CHRISTIANITY" ethnc_grp="EUROPEAN" SSN="" cityzenship="US" race="">
+<f_name>William</f_name>
+<l_name>Jones</l_name>
+<birth_date>19610613</birth_date>
+</Patient>
+<Test_Type test_id="80004">Electrolytes</Test_Type>
+<Result num="1">
+<type>Na</type>
+<value>150</value>
+<range>136-148</range>
+<comment>Above high normal</comment>
+<status>Final results</status>
+</Result>
+<Result num="2">
+<type>K+</type>
+<value>4.5</value>
+<range>3.5-5</range>
+<comment>Normal</comment>
+<status>Final results</status>
+</Result>
+<Result num="3">
+<type>Cl</type>
+<value>102</value>
+<range>94-105</range>
+<comment>Normal</comment>
+<status>Final results</status>
+</Result>
+<Result num="4">
+<type>CO2</type>
+<value>27</value>
+<range>24-31</range>
+<comment>Normal</comment>
+<status>Final results</status>
+</Result>
+</Message>

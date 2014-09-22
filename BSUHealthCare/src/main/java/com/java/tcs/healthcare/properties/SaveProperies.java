@@ -14,38 +14,69 @@ import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class SaveProperies {
 
 	public static String saveProperties(String key, String value) throws IOException {
-		Properties prop = new Properties();
+		
 		Map mapOut=ReadProperties.getAllProperties();
-		FileOutputStream fileOutputStream  = new FileOutputStream(new File("Healthcare.properties"),true);
-
+		
+    	 XSSFWorkbook workbook = new XSSFWorkbook(); 
+         XSSFSheet sheet = workbook.createSheet("Attribute Data");
+         
+         Map<String, Object[]> dataMap = new TreeMap<String, Object[]>();
 	
 			// set the properties value
-		Iterator entries = mapOut.entrySet().iterator();
-		if(!entries.hasNext()){
-			prop.setProperty(key,value); 
-		}else{
-		while (entries.hasNext()) {
-		  Entry thisEntry = (Entry) entries.next();
-	      if((String)thisEntry.getKey()!=null && ((String)thisEntry.getKey()).equals(key)){
-	    	  prop.setProperty((String)thisEntry.getKey(),(String) thisEntry.getValue()+","+value);
-	    	  break;
-	      }else{
-	    	  prop.setProperty(key,value); 
-	      }
-		}
-		}	
+        int counter=1; 
+        String valueInMap=(String) mapOut.get(key);
+        if(valueInMap!=null && !valueInMap.equals("")){
+        	mapOut.put(key,valueInMap+","+value);
+        }else{
+        	mapOut.put(key,value);
+        }
+        Iterator iterator = mapOut.entrySet().iterator();
+    	while (iterator.hasNext()) {
+    		Map.Entry mapEntry = (Map.Entry) iterator.next();
+    		System.out.println("The key is: " + mapEntry.getKey()
+    			+ ",value is :" + mapEntry.getValue());
+    		dataMap.put(counter+"", new Object[] {mapEntry.getKey(), mapEntry.getValue()});
+    		counter++;
+    	}
+		//Iterate over data and write to sheet
+        Set<String> keyset = dataMap.keySet();
+        int rownum = 0;
+        for (String keyinMap : keyset)
+        {
+            Row row = sheet.createRow(rownum++);
+            Object [] objArr = dataMap.get(keyinMap);
+            int cellnum = 0;
+            for (Object obj : objArr)
+            {
+               Cell cell = row.createCell(cellnum++);
+               if(obj instanceof String)
+                    cell.setCellValue((String)obj);
+                else if(obj instanceof Integer)
+                    cell.setCellValue((Integer)obj);
+            }
+        }
+        try
+        {
+            //Write the workbook in file system
+            FileOutputStream out = new FileOutputStream(new File("D:\\HealthCare\\Healthcare.xls"));
+            workbook.write(out);
+            out.close();
+            System.out.println("Healthcare.xls written successfully on disk.");
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
 
-			// save properties to project root folder
-			prop.store(fileOutputStream, null);
-			fileOutputStream.close();
-
+	
 		
-		return "Properties Save Successfuly";
+		return "Healthcare.xls written successfully on disk.";
 
 	}
 	
@@ -57,20 +88,20 @@ public class SaveProperies {
 	        XSSFSheet sheet = workbook.createSheet("Employee Data");
 	          
 	        //This data needs to be written (Object[])
-	        Map<String, Object[]> data = new TreeMap<String, Object[]>();
-	        data.put("1", new Object[] {"ID", "NAME", "LASTNAME"});
-	        data.put("2", new Object[] {1, "Amit", "Shukla"});
-	        data.put("3", new Object[] {2, "Lokesh", "Gupta"});
-	        data.put("4", new Object[] {3, "John", "Adwards"});
-	        data.put("5", new Object[] {4, "Brian", "Schultz"});
+	        Map<String, Object[]> dataMap = new TreeMap<String, Object[]>();
+	        dataMap.put("1", new Object[] {"ID", "NAME", "LASTNAME"});
+	        dataMap.put("2", new Object[] {1, "Amit", "Shukla"});
+	        dataMap.put("3", new Object[] {2, "Lokesh", "Gupta"});
+	        dataMap.put("4", new Object[] {3, "John", "Adwards"});
+	        dataMap.put("5", new Object[] {4, "Brian", "Schultz"});
 	          
 	        //Iterate over data and write to sheet
-	        Set<String> keyset = data.keySet();
+	        Set<String> keyset = dataMap.keySet();
 	        int rownum = 0;
-	        for (String key : keyset)
+	        for (String keyinMap : keyset)
 	        {
 	            Row row = sheet.createRow(rownum++);
-	            Object [] objArr = data.get(key);
+	            Object [] objArr = dataMap.get(keyinMap);
 	            int cellnum = 0;
 	            for (Object obj : objArr)
 	            {

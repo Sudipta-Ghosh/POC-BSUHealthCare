@@ -1,0 +1,21 @@
+DESC PATIENT
+Name           Null Type          
+-------------- ---- ------------- 
+PAT_ID              VARCHAR2(20)  
+PAT_NAME            VARCHAR2(100) 
+ADD_LINE_1          VARCHAR2(100) 
+ADD_LINE_2          VARCHAR2(100) 
+CITY                VARCHAR2(50)  
+STATE_C             VARCHAR2(50)  
+COUNTY_C            VARCHAR2(50)  
+COUNTRY_C           VARCHAR2(50)  
+ZIP                 VARCHAR2(50)  
+HOME_PHONE          VARCHAR2(50)  
+WORK_PHONE          VARCHAR2(50)  
+BIRTH_DATE          DATE          
+SEX                 VARCHAR2(10)  
+ETHNIC_GROUP        VARCHAR2(10)  
+MARITAL_STATUS      VARCHAR2(10)  
+RELIGION            VARCHAR2(10)  
+PAT_LANGUAGE        VARCHAR2(10)  
+SSN                 NUMBER(20)

@@ -14,7 +14,7 @@ public class Save_Get_PropertiesTest {
 	@Test
 	public void saveProperiestest() {
 		try {
-			assertEquals("Properties Save Successfuly",SaveProperies.saveProperties("abc1", "adsd"));
+			assertEquals("Healthcare.xls written successfully on disk.",SaveProperies.saveProperties("abc", "adsd"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -22,13 +22,8 @@ public class Save_Get_PropertiesTest {
 	}
 	
 	@Test
-	public void getProperiestest() {
-		try {
-			System.out.println("1=="+ReadProperties.getAllProperties());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void getProperiestest() throws IOException {
+		System.out.println("1=="+ReadProperties.getAllProperties());
 	}
 
 }
