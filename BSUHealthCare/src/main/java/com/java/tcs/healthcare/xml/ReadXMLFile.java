@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.java.tcs.healthcare.algorithm.DistanceComparator;
 import com.java.tcs.healthcare.algorithm.LevenshteinDistanceCalculator;
 import com.java.tcs.healthcare.dao.SearchDictionaryDao;
 import com.java.tcs.healthcare.vo.XMLTO;
@@ -29,6 +31,7 @@ import com.java.tcs.healthcare.vo.XMLTO;
 public class ReadXMLFile {
 	static StringBuffer sb=new StringBuffer();
 	static List arrList=new ArrayList();
+	static List resultList=new ArrayList();
 	static Map treemap=new TreeMap(); 
 
 	public static void main(String[] args) {
@@ -90,7 +93,15 @@ public class ReadXMLFile {
 		if (resultString != null && resultString.indexOf(",") != -1) {
 			arr = resultString.split(",");
 			for (int counter = 0; counter < arr.length; counter++) {
-				calculateDistanceForIndividualStringWithNode(nodeList,arr[counter].toUpperCase(),arrList);
+				arrList=calculateDistanceForIndividualStringWithNode(nodeList,arr[counter].toUpperCase(),arrList);
+				Collections.sort(arrList, new DistanceComparator());
+				for(int counter1=0;counter1<arrList.size();counter1++){
+					XMLTO xmlTo=(XMLTO) arrList.get(counter1);
+					System.out.println("nodeName 1:::"+xmlTo.getNodeName()+"::::StrVal2:::"+xmlTo.getXmlStrVal()+":::distance3"+xmlTo.getDistance());
+				}
+				resultList.add(arrList.get(0));
+				resultList.add(arrList.get(1));
+				resultList.add(arrList.get(2));
 			}
 		}
 		return arrList;
@@ -112,7 +123,7 @@ public class ReadXMLFile {
 				xmlto.setXmlStrVal(inputString);
 				xmlto.setDistance(distance);
 				arrList.add(xmlto);
-				System.out.println("nodeName:::"+nodeName+"::::StrVal:::"+inputString+":::distance"+distance+":::Length::::"+attributes.getLength());
+				//System.out.println("nodeName:::"+nodeName+"::::StrVal:::"+inputString+":::distance"+distance+":::Length::::"+attributes.getLength());
 				// get the number of nodes in this map
 				int numAttrs = attributes.getLength();
 
@@ -120,7 +131,7 @@ public class ReadXMLFile {
 					Attr attr = (Attr) attributes.item(i);					
 					String attrName = attr.getNodeName();
 					String attrValue = attr.getNodeValue();					
-					System.out.println("Found attribute: " + attrName + " with value: " + attrValue);
+					//System.out.println("Found attribute: " + attrName + " with value: " + attrValue);
 					arrList=calculateDistanceForIndividualStringWithNodeAttribute(attrName,inputString,arrList);
 				}
 				
@@ -143,7 +154,7 @@ public class ReadXMLFile {
 		xmlto.setXmlStrVal(inputString);
 		xmlto.setDistance(distance);
 		arrList.add(xmlto);
-		System.out.println("attrName:::"+attrName+"::::StrVal:::"+inputString+":::distance"+distance);
+		//System.out.println("attrName:::"+attrName+"::::StrVal:::"+inputString+":::distance"+distance);
 				
 		
 		return arrList;

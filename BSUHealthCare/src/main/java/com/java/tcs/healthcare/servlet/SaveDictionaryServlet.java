@@ -2,6 +2,7 @@ package com.java.tcs.healthcare.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,6 +20,28 @@ public class SaveDictionaryServlet extends HttpServlet {
 	  {
 	      // Set response content type
 	      response.setContentType("text/html");
+	      
+	      Map<String, String[]> requestParams = request.getParameterMap();
+	      StringBuilder sb = new StringBuilder();
+	      
+	        // retrieve parameter name - values pair from parameter map
+	      for (Map.Entry<String, String[]> entry : requestParams.entrySet()) {
+	            String key = entry.getKey();         // parameter name
+	            String[] value = entry.getValue();   // parameter values as array of String
+	            String valueString = "";
+	            
+	            // in case of checkbox input, value may be array of length greater than one
+	            if (value.length > 1) {
+	                for (int i = 0; i < value.length; i++) {
+	                    valueString += value[i] + " ";
+	                }
+	            } else {
+	                valueString = value[0];
+	            }
+	            System.out.println("***** " + key + " - " + valueString);
+	            sb.append(key).append(" - ").append(valueString).append("; ");
+	        }
+	      System.out.println("Stringbuffer----------"+sb.toString());
 
 	      // Actual logic goes here.
 	      String sourceName=request.getParameter("Source Name");
