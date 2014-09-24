@@ -42,41 +42,50 @@
 
 <script language="javascript" type="text/javascript">
  function addRow(tableID) {
- 
+ 		
+ 	 	
             var table = document.getElementById(tableID);
  
             var rowCount = table.rows.length;
             var row = table.insertRow(rowCount);
+             
  
             var cell1 = row.insertCell(0);
             var element1 = document.createElement("input");
             element1.type = "checkbox";
-             element1.name="chkbox[]";
+            cell1.align = "center";
+            element1.name="chkbox[]";
             cell1.appendChild(element1);
- 
+ 		
             
             var cell2 = row.insertCell(1);
             var element2 = document.createElement("input");
 	    element2.type = "text";
-	    element2.name = "txtbox[]";
+            cell2.align = 'center';
+            cell2.className = 'form_field_txt1';
+	    element2.name = "pSourceName";
             cell2.appendChild(element2);
+ 		
  
             var cell3 = row.insertCell(2);
-            var element2 = document.createElement("input");
-            element2.type = "text";
-            element2.name = "txtbox[]";
-            cell3.appendChild(element2);
+            var element3 = document.createElement("input");
+            element3.type = "text";
+            element3.name = "pInputField";
+            cell3.appendChild(element3);
+ 		
             
 	    var cell4 = row.insertCell(3);
-	    var element2 = document.createElement("input");
-	    element2.type = "text";
-	    element2.name = "txtbox[]";
-	    cell4.appendChild(element2);
+	    var element4 = document.createElement("input");
+	    element4.type = "text";
+	    element4.name = "pProbableName";
+	    cell4.appendChild(element4);
+ 		
  
  
         }
  
         function deleteRow(tableID) {
+        
             try {
             var table = document.getElementById(tableID);
             var rowCount = table.rows.length;
@@ -96,12 +105,16 @@
                 alert(e);
             }
         }
+ function savePage(){
+ document.forms[0].action="SaveDictionaryServlet";
+ document.forms[0].submit();
  
+ }
 </script>
 
 </head>
 
-<body onload="javascript:alert("<%=request.getAttribute("pSubmitStatus")%>")">
+<body >
 
 
 
@@ -134,7 +147,7 @@
                     <div class="col-lg-12">                        
                         <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>                        
                         <p>
-                         <form method="post" name="FormAttributeGroupList" action="PCPRD_PROCESS.jsp">
+                         <form method="post" name="Form1" action="">
 		                
 			<table class="formtable" align="center" border=1 width="95%" cellspacing="1" cellpadding="0">
 			<tr>
@@ -152,7 +165,7 @@
 			<td align="left"valign="middle"width="20%"nowrap class="mandatoryTextStyle"><%="Dictionary"%>
 			</td>
 			<td align="left"class="form_field_txt1"valign="top"width="35%"nowrap>
-			<input type="text"class="fieldSCls" onmousedown="this.className='fieldSClsClick'" onblur="this.className='fieldSCls'" name="pAttributeGroupCode" size="30"maxlength="30" onBlur="this.value = trim(this.value.toUpperCase());" onKeyPress="makeUpper()" onChange="changeUpper(this)" style="text-transform:uppercase;" value="" >
+			<input type="text"class="fieldSCls" onmousedown="this.className='fieldSClsClick'" onblur="this.className='fieldSCls'" name="pAttributeGroupCode" size="30"maxlength="30" onBlur="this.value = trim(this.value.toUpperCase());" onKeyPress="makeUpper()" onChange="changeUpper(this)" style="text-transform:uppercase;" value="Patient Attribute" >
 			</td>
 			</tr>
 
@@ -167,21 +180,41 @@
 		                
 			
 
-			<TABLE id="dataTable" width="95%" border="1">
-			<TR>
-			<TD><INPUT class="name" type="checkbox" name="chk"  style="margin-left:auto; margin-right:auto;"/></TD>
-			<TD> <INPUT class="name" type="text" /></TD>
-			<TD> <INPUT class="name" type="text" /> </TD>
-			<TD> <INPUT class="name" type="text" /></TD>
-			</TR>
-			</TABLE>
+		
+			<table id="dataTable" cellspacing="1"cellpadding="0"align="center" border=0 width="100%">
+			<tr class="table_head">
+			<td nowrap></td>
+			<td nowrap><%="Source Name"%></td>
+			<td nowrap><%="Update String"%></td>			
+			<td nowrap><%="Probable Name"%></td>
+			</tr>	
+			<p></p>			
 			
-			 <table  align="right" border="0" width="100%">
-		      	<INPUT type="submit"  align="right" value="Add Row" onclick="addRow('dataTable')" />		      
-			<INPUT type="submit" align="left" value="Delete Row" onclick="deleteRow('dataTable')" />
-			<INPUT type="submit" align="left" value="Save" />
+			<table  align="center" border="0" width="100%">
+			<div class="actionbtns">
+			<div id="btn" class="btn_blue">
+			<ul>
+			
+			<li><a href="#null" onclick="addRow('dataTable')"><span><%="Add Row"%></span></a></li>
+			 <li><a href="#null" onclick="deleteRow('dataTable')"><span><%="Delete Row"%></span></a></li>			
+			
+			</ul>
+			</div>
+			</div>
 			</table>
+
 			
+			</table>
+			<table  align="center" border="0" width="100%">
+			<div class="actionbtns">
+			<div id="btn" class="btn_blue">
+			<ul>
+
+			<li><a href="#null" onclick="savePage()"><span><%="Save"%></span></a></li>		
+
+			</ul>
+			</div>
+			</div>
 			</table>
 			</td></tr>
 			<tr></tr>

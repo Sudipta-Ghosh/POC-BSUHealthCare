@@ -52,16 +52,16 @@ public class ReadProperties {
 		Map mapOut=new HashMap();
 		 try
 	        {
-	            FileInputStream file = new FileInputStream(new File("D:\\HealthCare\\Healthcare.xls"));
+	            FileInputStream file = new FileInputStream(new File("D:\\HealthCare\\Healthcare.xlsx"));
 	            String keyName="";
 	 
 	            //Create Workbook instance holding reference to .xlsx file
-	            //XSSFWorkbook workbook = new XSSFWorkbook(file);
-	            org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(file);
+	            XSSFWorkbook workbook = new XSSFWorkbook(file);
+	            //org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(file);
 	 
 	            //Get first/desired sheet from the workbook
-	            //XSSFSheet sheet = workbook.getSheetAt(0);
-	            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+	            XSSFSheet sheet = workbook.getSheetAt(0);
+	            //org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
 	 
 	            //Iterate through each rows one by one
 	            Iterator<Row> rowIterator = sheet.iterator();

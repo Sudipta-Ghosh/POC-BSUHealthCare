@@ -23,6 +23,8 @@ public class SaveDictionaryServlet extends HttpServlet {
 	      
 	      Map<String, String[]> requestParams = request.getParameterMap();
 	      StringBuilder sb = new StringBuilder();
+	      String pSourceName="";
+	      String pInputField="";
 	      
 	        // retrieve parameter name - values pair from parameter map
 	      for (Map.Entry<String, String[]> entry : requestParams.entrySet()) {
@@ -33,22 +35,38 @@ public class SaveDictionaryServlet extends HttpServlet {
 	            // in case of checkbox input, value may be array of length greater than one
 	            if (value.length > 1) {
 	                for (int i = 0; i < value.length; i++) {
-	                    valueString += value[i] + " ";
+	                	if(i+1==value.length){
+	                		 valueString += value[i];	
+	                	}else{
+	                    valueString += value[i] + "@";
+	                	}
 	                }
 	            } else {
 	                valueString = value[0];
 	            }
+	            
 	            System.out.println("***** " + key + " - " + valueString);
-	            sb.append(key).append(" - ").append(valueString).append("; ");
+	            if(key!=null && key.equals("pSourceName")){
+	            	pSourceName=valueString;
+	            }else  if(key!=null && key.equals("pInputField")){
+	            	pInputField=valueString;
+	            }
 	        }
-	      System.out.println("Stringbuffer----------"+sb.toString());
-
+	      System.out.println("pSourceName----------"+pSourceName);
+	      System.out.println("pInputField----------"+pInputField);
 	      // Actual logic goes here.
-	      String sourceName=request.getParameter("Source Name");
-	      String probableName=request.getParameter("Probable Name");
+	      String arrSourceName[]=pSourceName.split("@");
+	      String arrInputField[]=pInputField.split("@");
+	      
 	      SaveProperies saveProperies =new SaveProperies();
+	      String sourceName;
+	      String probableName;
+	      for(int counter=0;counter<arrSourceName.length;counter++){
+	    	  sourceName=arrSourceName[counter];
+	    	  probableName=arrInputField[counter];
 	      String result=saveProperies.saveProperties(sourceName,probableName);
-	      request.setAttribute("pSubmitStatus", result);
+	      }
+	      //request.setAttribute("pSubmitStatus", result);
 	      RequestDispatcher requestDispatcher =request.getRequestDispatcher("/DictionaryUpdate.jsp");
 	      requestDispatcher.forward(request, response);
 	      

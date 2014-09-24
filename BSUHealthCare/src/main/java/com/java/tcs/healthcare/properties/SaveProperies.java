@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,6 +23,7 @@ public class SaveProperies {
 	public static String saveProperties(String key, String value) throws IOException {
 		
 		Map mapOut=ReadProperties.getAllProperties();
+		//Map mapOut=new HashMap();
 		
     	 XSSFWorkbook workbook = new XSSFWorkbook(); 
          XSSFSheet sheet = workbook.createSheet("Attribute Data");
@@ -64,7 +66,7 @@ public class SaveProperies {
         try
         {
             //Write the workbook in file system
-            FileOutputStream out = new FileOutputStream(new File("D:\\HealthCare\\Healthcare.xls"));
+            FileOutputStream out = new FileOutputStream(new File("D:\\HealthCare\\Healthcare.xlsx"));
             workbook.write(out);
             out.close();
             System.out.println("Healthcare.xls written successfully on disk.");
