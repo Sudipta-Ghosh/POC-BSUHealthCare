@@ -14,8 +14,8 @@ $(function () {
                 		.append($('<td/>').text(file.fileName))
                 		.append($('<td/>').text(file.fileSize))
                 		.append($('<td/>').text(file.fileType))
-                		.append($('<td/>').html("<a href='upload?f="+index+"'>Click</a>"))
-                		.append($('<td/>').html("<a href='upload?f="+index+"'>Report</a>"))
+                		.append($('<td/>').html("<a href='upload?f="+index+"&event='GenerateFile''>Click</a>"))
+                		.append($('<td/>').html("<a href='upload?f="+index+"&event='GenerateReport''>Report</a>"))
 
                 		)//end $("#uploaded-files").append()
             }); 

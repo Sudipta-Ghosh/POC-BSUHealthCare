@@ -1,5 +1,8 @@
 package com.java.tcs.healthcare.servlet;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.tcs.healthcare.fileupload.MultipartRequestHandler;
 import com.java.tcs.healthcare.vo.FileTO;
+import com.java.tcs.healthcare.xml.ReadXMLFile;
 import com.java.tcs.healthcare.xml.XMLReader;
 
 
@@ -64,7 +68,9 @@ public class FileUploadServlet extends HttpServlet {
 		
 		 // 1. Get f from URL upload?f="?"
 		 String value = request.getParameter("f");
+		 String event = request.getParameter("event");
 		 
+			 
 		 // 2. Get the file of index "f" from the list "files"
 		 FileTO getFile = files.get(Integer.parseInt(value));
 		 
@@ -84,8 +90,20 @@ public class FileUploadServlet extends HttpServlet {
 		        while((ch = input.read())!= -1)
 		            sb.append((char)ch);
 		        System.out.println("String1------"+sb.toString());
-		        XMLReader.readXMLAttributes(sb.toString());
-		        
+		       
+		        if(event!=null && event.equals("GenerateReport")){
+		        try {
+		            File file = new File("D:\\example.html");
+		            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+		            bufferedWriter.write(ReadXMLFile.printFirstPart());
+		            bufferedWriter.write(XMLReader.readXMLAttributes(sb.toString()));
+		            bufferedWriter.write(ReadXMLFile.printLastPart());
+		            
+		            bufferedWriter.close();
+		          } catch ( IOException e ) {
+		             e.printStackTrace();
+		          }
+		        }
 		        
 		        output.close();
 		        input.close();

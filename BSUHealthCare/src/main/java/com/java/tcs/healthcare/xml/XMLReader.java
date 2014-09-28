@@ -26,11 +26,12 @@ import com.java.tcs.healthcare.vo.XMLTO;
 
 public class XMLReader {
 	
-	public static Map readXMLAttributes(String xmlString){
+	public static String readXMLAttributes(String xmlString){
 	 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	 DocumentBuilder builder;	
 	 Document doc = null;
 	 String nodeName="";
+	 StringBuffer sb=new StringBuffer();
 	try {
 		builder = factory.newDocumentBuilder();
 		 InputSource is = new InputSource();
@@ -59,12 +60,24 @@ public class XMLReader {
 		arrList=ReadXMLFile.printNote(doc.getChildNodes(), (String)resultList.get(i),arrList);
 	}
 	
+
 	for (int i=0; i<arrList.size(); i++) {
 		XMLTO xmlto=(XMLTO) arrList.get(i);
 		System.out.println(xmlto.getNodeName()+":::"+xmlto.getXmlStrVal()+":::"+xmlto.getDistance());
+		sb.append("<tr>");
+		sb.append("<td>");
+		sb.append(xmlto.getNodeName());
+		sb.append("<td>");
+		sb.append("<td>");
+		sb.append(xmlto.getXmlStrVal());
+		sb.append("<td>");
+		sb.append("<td>");
+		sb.append(xmlto.getNodeName());
+		sb.append("<td>");
+		sb.append("<tr>");
 		
 	}
-	   return null;
+	   return sb.toString();
 		
 	}
 	

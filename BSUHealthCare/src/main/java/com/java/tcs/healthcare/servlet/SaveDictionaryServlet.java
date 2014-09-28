@@ -1,7 +1,6 @@
 package com.java.tcs.healthcare.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.java.tcs.healthcare.properties.ReadProperties;
 import com.java.tcs.healthcare.properties.SaveProperies;
 
 public class SaveDictionaryServlet extends HttpServlet {
@@ -36,9 +36,17 @@ public class SaveDictionaryServlet extends HttpServlet {
 	            if (value.length > 1) {
 	                for (int i = 0; i < value.length; i++) {
 	                	if(i+1==value.length){
-	                		 valueString += value[i];	
+	                		if(key!=null && key.equals("pSourceName")){
+	                		 valueString += value[i]+"";	
+	                		}else{
+	                			 valueString += value[i]+"$";		
+	                		}
 	                	}else{
-	                    valueString += value[i] + "@";
+	                	if(value[i]!=null && value[i].equals("")){
+	                    valueString += "$" + "@";
+	                	}else{
+	                		 valueString += value[i] + "@";	
+	                	}
 	                	}
 	                }
 	            } else {
@@ -59,15 +67,23 @@ public class SaveDictionaryServlet extends HttpServlet {
 	      String arrInputField[]=pInputField.split("@");
 	      
 	      SaveProperies saveProperies =new SaveProperies();
-	      String sourceName;
-	      String probableName;
+	      String sourceName = null;
+	      String probableName = null;
 	      for(int counter=0;counter<arrSourceName.length;counter++){
-	    	  sourceName=arrSourceName[counter];
-	    	  probableName=arrInputField[counter];
-	      String result=saveProperies.saveProperties(sourceName,probableName);
+	    	  if(arrSourceName.length>=counter){
+	    		  sourceName=arrSourceName[counter];
+	    	  }
+	    	  if(arrInputField.length>=counter){
+	    	   probableName=arrInputField[counter];
+	    	   probableName=probableName.replace("$", "");
+	    	  }
+	    	  if(probableName!=null && !probableName.equals("$") && sourceName!=null && !sourceName.equals("")){
+	    		  String result=saveProperies.saveProperties(sourceName,probableName);
+	    	  }
 	      }
-	      //request.setAttribute("pSubmitStatus", result);
-	      RequestDispatcher requestDispatcher =request.getRequestDispatcher("/DictionaryUpdate.jsp");
+	  	  Map mapOut=ReadProperties.getAllProperties();
+	      request.setAttribute("mapOut", mapOut);
+	      RequestDispatcher requestDispatcher =request.getRequestDispatcher("/dictionary.jsp");
 	      requestDispatcher.forward(request, response);
 	      
 	  }

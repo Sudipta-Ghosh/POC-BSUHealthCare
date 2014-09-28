@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<%@ page import="java.io.*,java.util.*, java.sql.* ,java.text.*"%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -6,19 +7,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<title>jQuery File Upload Example</title>
+<title>BSU Dictionary Update</title>
 <script src="js/jquery.1.9.1.min.js"></script>
-<link href="css/DictionaryUpdate.css" rel="stylesheet">
-
 <script src="js/vendor/jquery.ui.widget.js"></script>
 <script src="js/jquery.iframe-transport.js"></script>
 <script src="js/jquery.fileupload.js"></script>
-
 <!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/form.css" type="text/css" rel="stylesheet" />
 
-<!-- Custom CSS -->
 <link href="css/simple-sidebar.css" rel="stylesheet">
+<link href="css/DictionaryUpdate.css" rel="stylesheet">
+
+<link href="css/mystyle.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+
+<link href="css/dropzone.css" type="text/css" rel="stylesheet" />
+
+
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,11 +34,11 @@
 
 <!-- bootstrap just to have good looking page -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+
 
 <!-- we code these -->
-<link href="css/dropzone.css" type="text/css" rel="stylesheet" />
-<link href="css/form.css" type="text/css" rel="stylesheet" />
+
+
 <script src="js/myuploadfunction.js"></script>
 
 <!-- header style ignore it -->
@@ -47,38 +52,37 @@
             var table = document.getElementById(tableID);
  
             var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
+            var newRow = table.insertRow(rowCount);
              
- 
-            var cell1 = row.insertCell(0);
-            var element1 = document.createElement("input");
-            element1.type = "checkbox";
-            cell1.align = "center";
-            element1.name="chkbox[]";
-            cell1.appendChild(element1);
- 		
-            
-            var cell2 = row.insertCell(1);
-            var element2 = document.createElement("input");
-	    element2.type = "text";
-            cell2.align = 'center';
-            cell2.className = 'form_field_txt1';
-	    element2.name = "pSourceName";
-            cell2.appendChild(element2);
- 		
- 
-            var cell3 = row.insertCell(2);
-            var element3 = document.createElement("input");
-            element3.type = "text";
-            element3.name = "pInputField";
-            cell3.appendChild(element3);
- 		
-            
-	    var cell4 = row.insertCell(3);
-	    var element4 = document.createElement("input");
-	    element4.type = "text";
-	    element4.name = "pProbableName";
-	    cell4.appendChild(element4);
+   
+	    cellString = "<input type=\""+"checkbox\""+" name=\""+"tCheckBox"+"\""+" id =\""+"tCheckBox"+"\""+">";
+		var y = newRow.insertCell(0);
+		y.align = 'center';
+		y.nowrap = 'nowrap';
+		y.innerHTML = cellString;
+
+		cellString = "<input type=\""+"text\""+ " class=\""+"fieldSCls\""+ " onmousedown=\""+"this.className='fieldSClsClick'\""+ " onblur=\""+"this.className='fieldSCls'\""+ " name=\""+"pSourceName"+""+"\""+" id =\""+""+"\""+"size=\""+"40\""+"\""+">";
+		y = newRow.insertCell(1);
+		y.align = 'center';
+		y.nowrap = 'nowrap';
+		y.className = 'form_field_txt1';
+		y.innerHTML = cellString;
+
+		cellString = "<input type=\""+"text\""+ " class=\""+"fieldSCls\""+ " onmousedown=\""+"this.className='fieldSClsClick'\""+ " onblur=\""+"this.className='fieldSCls'\""+ " name=\""+"pInputField"+"\""+" id =\""+""+"\""+"size=\""+"40\""+"\""+">";
+		y = newRow.insertCell(2);
+		y.align = 'center';
+		y.nowrap = 'nowrap';
+		y.className = 'form_field_txt1';
+		y.innerHTML = cellString;
+
+		
+		cellString = "<input type=\""+"text\""+ " class=\""+"fieldSCls_readonly\""+ " onmousedown=\""+"this.className='fieldSClsClick'\""+ " onblur=\""+"this.className='fieldSCls'\""+ " name=\""+"pProbableName"+"\""+" id =\""+""+"\""+" style=\""+"align:left !important;color:#000000;background-color:#E1E1E1;"+"size=\""+"40\""+"\""+" disabled>";
+		y = newRow.insertCell(3);
+		y.align = 'center';
+		y.nowrap = 'nowrap';
+		y.className = 'form_field_txt1';
+		y.innerHTML = cellString;
+		    
  		
  
  
@@ -110,14 +114,16 @@
  document.forms[0].submit();
  
  }
+ function loadDictionary(){
+  document.forms[0].action="ReadDictionaryServlet";
+  document.forms[0].submit();
+  
+ }
 </script>
 
 </head>
 
-<body >
-
-
-
+<body>
 
  <div id="wrapper">
 
@@ -133,7 +139,7 @@
                     <a href="index.jsp">File Upload</a>
                 </li>
                 <li>
-                    <a href="DictionaryUpdate.jsp">Dictionary Update</a>
+                    <a href="javascript:loadDictionary();">Dictionary Update</a>
                 </li>
                
             </ul>
@@ -145,9 +151,17 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">                        
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>                        
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><img src="img/toggleMenu.jpg" width="18" height="18"border="0"align="absmiddle"></a>                        
                         <p>
                          <form method="post" name="Form1" action="">
+                         
+                         <div align="center" class="search_txt"><%="BSU Dictionary"%></div>
+			    <tr></tr>
+			    <tr></tr>
+			    <tr></tr>
+			    <tr></tr>
+			    <tr></tr>
+  			 <tr></tr>
 		                
 			<table class="formtable" align="center" border=1 width="95%" cellspacing="1" cellpadding="0">
 			<tr>
@@ -165,7 +179,7 @@
 			<td align="left"valign="middle"width="20%"nowrap class="mandatoryTextStyle"><%="Dictionary"%>
 			</td>
 			<td align="left"class="form_field_txt1"valign="top"width="35%"nowrap>
-			<input type="text"class="fieldSCls" onmousedown="this.className='fieldSClsClick'" onblur="this.className='fieldSCls'" name="pAttributeGroupCode" size="30"maxlength="30" onBlur="this.value = trim(this.value.toUpperCase());" onKeyPress="makeUpper()" onChange="changeUpper(this)" style="text-transform:uppercase;" value="Patient Attribute" >
+			<input type="text" class="fieldSCls" onmousedown="this.className='fieldSClsClick'" onblur="this.className='fieldSCls'" name="pAttributeGroupCode" size="30"maxlength="30" onBlur="this.value = trim(this.value.toUpperCase());" onKeyPress="makeUpper()" onChange="changeUpper(this)" style="text-transform:uppercase;" value="Patient Attribute" >
 			</td>
 			</tr>
 
@@ -188,6 +202,31 @@
 			<td nowrap><%="Update String"%></td>			
 			<td nowrap><%="Probable Name"%></td>
 			</tr>	
+			<%Map mapOut=(Map)request.getAttribute("mapOut");
+			if(mapOut!=null && mapOut.size()>1){
+			Iterator iterator = mapOut.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Map.Entry entry = (Map.Entry) iterator.next();
+				String key = (String)entry.getKey();         // parameter name
+				String value = (String)entry.getValue();   // parameter values as array of 
+				System.out.println("key---"+key);
+				System.out.println("value---"+value);
+
+		    	
+			%>
+ 			<tr>
+ 			<td align="center" nowrap> <input type="checkbox"></td>
+ 			<td align="left"class="form_field_txt1"valign="top"width="30%"nowrap>
+ 			<input type="text" class="fieldSCls_readonly" name="pSourceName" value="<%=key%>" >
+ 			</td>
+ 			<td align="left"class="form_field_txt1"valign="top"width="30%"nowrap>
+ 			<input type="text" class="fieldSCls" name="pInputField" value="">
+ 			</td>
+  			<td align="left"class="form_field_txt1"valign="top"width="30%"nowrap>
+  			<input type="text" class="fieldSCls_readonly" name="pInputField" value="<%=value%>"  disabled></td>
+  			</tr> 
+			    
+			 <%}}%>
 			<p></p>			
 			
 			<table  align="center" border="0" width="100%">
@@ -196,7 +235,7 @@
 			<ul>
 			
 			<li><a href="#null" onclick="addRow('dataTable')"><span><%="Add Row"%></span></a></li>
-			 <li><a href="#null" onclick="deleteRow('dataTable')"><span><%="Delete Row"%></span></a></li>			
+			 <!--<li><a href="#null" onclick="deleteRow('dataTable')"><span><%="Delete Row"%></span></a></li>-->			
 			
 			</ul>
 			</div>

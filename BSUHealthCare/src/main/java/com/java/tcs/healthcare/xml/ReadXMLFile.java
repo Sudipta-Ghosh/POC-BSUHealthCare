@@ -29,7 +29,7 @@ import com.java.tcs.healthcare.dao.SearchDictionaryDao;
 import com.java.tcs.healthcare.vo.XMLTO;
 
 public class ReadXMLFile {
-	static StringBuffer sb=new StringBuffer();
+	
 	static List arrList=new ArrayList();
 	static List resultList=new ArrayList();
 	static Map treemap=new TreeMap(); 
@@ -51,7 +51,7 @@ public class ReadXMLFile {
 
 		ReadXMLFile.readXML(str);
 		ReadXMLFile.printLastPart();
-		String resultStr=sb.toString();
+		String resultStr="";
 		byte[] contentInBytes = resultStr.getBytes();
 		 
 		try {
@@ -161,7 +161,8 @@ public class ReadXMLFile {
 		
 	}
 	
-	private static void printFirstPart(){
+	 public static String printFirstPart(){
+	     StringBuffer sb=new StringBuffer();
 		sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 		sb.append("<html>");
 		sb.append("<head>");
@@ -190,16 +191,18 @@ public class ReadXMLFile {
 		sb.append("</tr>");
 		sb.append("</thead>");
 		sb.append("<tbody>");
+		return sb.toString();
 		
 	}
 	
-	private static void printLastPart(){
+	 public static String printLastPart(){
+		 StringBuffer sb=new StringBuffer();
 		sb.append("</tbody>");
 		sb.append("</table>");
 		sb.append("</div>");
 		sb.append("</body>");
 		sb.append("</html>");
-	
+		return sb.toString();
 	}
 	
 

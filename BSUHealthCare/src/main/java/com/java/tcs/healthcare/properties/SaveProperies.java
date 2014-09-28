@@ -22,6 +22,7 @@ public class SaveProperies {
 
 	public static String saveProperties(String key, String value) throws IOException {
 		
+		if( value!=null && !value.equals("")){
 		Map mapOut=ReadProperties.getAllProperties();
 		//Map mapOut=new HashMap();
 		
@@ -75,6 +76,7 @@ public class SaveProperies {
         {
             e.printStackTrace();
         }
+		}
 
 	
 		

@@ -26,4 +26,12 @@ id="WebApp_ID" version="2.5">
   	<servlet-name>SaveDictionaryServlet</servlet-name>
   	<url-pattern>/SaveDictionaryServlet</url-pattern>
   </servlet-mapping>
+   <servlet>
+  	<servlet-name>ReadDictionaryServlet</servlet-name>            
+  	<servlet-class>com.java.tcs.healthcare.servlet.ReadDictionaryServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ReadDictionaryServlet</servlet-name>
+  	<url-pattern>/ReadDictionaryServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
