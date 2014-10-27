@@ -37,7 +37,14 @@
 <!-- header style ignore it -->
 <link href="css/mystyle.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
-
+<script language="javascript" type="text/javascript">
+ function loadDictionary(){
+ //alert('ReadDictionaryServlet');
+  document.forms[0].action="ReadDictionaryServlet";
+  document.forms[0].submit();
+  
+ }
+</script>
 </head>
 
 <body>
@@ -59,13 +66,13 @@
                     <a href="index.jsp">File Upload</a>
                 </li>
                 <li>
-                    <a href="DictionaryUpdate.jsp">Dictionary Update</a>
+                  <a href="javascript:loadDictionary();">Dictionary Update</a>
                 </li>
                
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
-
+	<form method="post" name="Form1" action="">
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
@@ -101,6 +108,7 @@
 
     </div>
     <!-- /#wrapper -->
+    </form>
 
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>

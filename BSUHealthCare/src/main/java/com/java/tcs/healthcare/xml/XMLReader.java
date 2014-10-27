@@ -67,14 +67,14 @@ public class XMLReader {
 		sb.append("<tr>");
 		sb.append("<td>");
 		sb.append(xmlto.getNodeName());
-		sb.append("<td>");
+		sb.append("</td>");
 		sb.append("<td>");
 		sb.append(xmlto.getXmlStrVal());
-		sb.append("<td>");
+		sb.append("</td>");
 		sb.append("<td>");
 		sb.append(xmlto.getNodeName());
-		sb.append("<td>");
-		sb.append("<tr>");
+		sb.append("</td>");
+		sb.append("</tr>");
 		
 	}
 	   return sb.toString();
@@ -91,11 +91,8 @@ public class XMLReader {
 		try {
 			Properties prop = new Properties();
 			input = new FileInputStream("D:\\HealthCare\\oracle_table_structure.txt");
-	 
-			// load a properties file
+	    	// load a properties file
 			prop.load(input);
-			
-
 			Enumeration enuKeys = prop.keys();
 			while (enuKeys.hasMoreElements()) {
 				 key = (String) enuKeys.nextElement();

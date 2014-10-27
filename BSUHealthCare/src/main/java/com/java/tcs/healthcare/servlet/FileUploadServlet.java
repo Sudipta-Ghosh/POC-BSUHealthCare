@@ -1,11 +1,9 @@
 package com.java.tcs.healthcare.servlet;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,7 +63,7 @@ public class FileUploadServlet extends HttpServlet {
 	 ****************************************************/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException{
-		
+		  
 		 // 1. Get f from URL upload?f="?"
 		 String value = request.getParameter("f");
 		 String event = request.getParameter("event");
@@ -75,15 +73,10 @@ public class FileUploadServlet extends HttpServlet {
 		 FileTO getFile = files.get(Integer.parseInt(value));
 		 
 		 try {		
-			 	// 3. Set the response content type = file content type 
-			 	response.setContentType(getFile.getFileType());
-			 	
-			 	// 4. Set header Content-disposition
-			 	response.setHeader("Content-disposition", "attachment; filename=\""+getFile.getFileName()+"\"");
-			 	
+			 
 			 	// 5. Copy file inputstream to response outputstream
 		        InputStream input = getFile.getContent();
-		        OutputStream output = response.getOutputStream();
+		       
 		        byte[] buffer = new byte[1024*10];
 		        StringBuilder sb = new StringBuilder();
 		        int ch;
@@ -92,20 +85,18 @@ public class FileUploadServlet extends HttpServlet {
 		        System.out.println("String1------"+sb.toString());
 		       
 		        if(event!=null && event.equals("GenerateReport")){
-		        try {
-		            File file = new File("D:\\example.html");
-		            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-		            bufferedWriter.write(ReadXMLFile.printFirstPart());
-		            bufferedWriter.write(XMLReader.readXMLAttributes(sb.toString()));
-		            bufferedWriter.write(ReadXMLFile.printLastPart());
-		            
-		            bufferedWriter.close();
-		          } catch ( IOException e ) {
-		             e.printStackTrace();
-		          }
+		        	String result=ReadXMLFile.printFirstPart()+XMLReader.readXMLAttributes(sb.toString())+ReadXMLFile.printLastPart();
+		        System.out.println("GenerateReport String1------"+result);
+		        response.setContentType("text/html");
+		        PrintWriter out = response.getWriter();
+		        out.println(result);
+		        out.close();
+				
 		        }
 		        
-		        output.close();
+		      
+		        
+		      
 		        input.close();
 		 }catch (IOException e) {
 				e.printStackTrace();
