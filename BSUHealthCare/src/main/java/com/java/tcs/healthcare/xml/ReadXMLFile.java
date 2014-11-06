@@ -1,24 +1,15 @@
 package com.java.tcs.healthcare.xml;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -29,87 +20,71 @@ import com.java.tcs.healthcare.dao.SearchDictionaryDao;
 import com.java.tcs.healthcare.vo.XMLTO;
 
 public class ReadXMLFile {
+
+	static List arrList = new ArrayList();
+	static List resultList = new ArrayList();
+	static Map treemap = new TreeMap();
+
 	
-	static List arrList=new ArrayList();
-	static List resultList=new ArrayList();
-	static Map treemap=new TreeMap(); 
 
-	public static void main(String[] args) {
-
-		Scanner ob = new Scanner(System.in);
-
-		System.out.println("Please enter the String:: ");
-		String str = ob.nextLine();
-		FileOutputStream out=null;
-		try {
-			 out = new FileOutputStream(new File("Healthcare.html"));
-			ReadXMLFile.printFirstPart();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		ReadXMLFile.readXML(str);
-		ReadXMLFile.printLastPart();
-		String resultStr="";
-		byte[] contentInBytes = resultStr.getBytes();
-		 
-		try {
-			out.write(contentInBytes);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
-	}
-
-	private static void readXML(String inputString) {
-		try {
-
-			File file = new File("output_1.xml");
-			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
-
-			Document doc = dBuilder.parse(file);
-			System.out.println("Root element :"
-					+ doc.getDocumentElement().getNodeName());
-			if (doc.hasChildNodes()) {
-				//printNote(doc.getChildNodes(), inputString);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	public static List printNote(NodeList nodeList, String inputString,List arrList) {
+	public static List printNote(NodeList nodeList, String inputString,
+			List arrList) {
 		String resultString = SearchDictionaryDao
 				.searchDictionaryDAO(inputString.toUpperCase());
-		
-		String arr[] = new String[100];
-		if (resultString != null && resultString.indexOf(",") != -1) {
-			arr = resultString.split(",");
-			for (int counter = 0; counter < arr.length; counter++) {
-				arrList=calculateDistanceForIndividualStringWithNode(nodeList,arr[counter].toUpperCase(),arrList);
-				Collections.sort(arrList, new DistanceComparator());
-				for(int counter1=0;counter1<arrList.size();counter1++){
-					XMLTO xmlTo=(XMLTO) arrList.get(counter1);
-					System.out.println("nodeName 1:::"+xmlTo.getNodeName()+"::::StrVal2:::"+xmlTo.getXmlStrVal()+":::distance3"+xmlTo.getDistance());
+		PrintWriter out = null;
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		try {
+			fw = new FileWriter("D:\\HealthCare\\Healthcare.txt", true);
+			bw = new BufferedWriter(fw);
+			out = new PrintWriter(bw);
+
+			String arr[] = new String[100];
+			
+			if (resultString != null && resultString.indexOf(",") != -1) {
+				arr = resultString.split(",");
+				for (int counter = 0; counter < arr.length; counter++) {
+					String str = "";
+					arrList = calculateDistanceForIndividualStringWithNode(
+							nodeList, arr[counter].toUpperCase(), arrList);
+					Collections.sort(arrList, new DistanceComparator());
+					XMLTO xmlTo = null;
+					for (int counter1 = 0; counter1 <= 2; counter1++) {
+						xmlTo = (XMLTO) arrList.get(counter1);
+						str = str+xmlTo.getNodeName() + ",";
+
+					}
+					str = arr[counter].toUpperCase() + "," + str;
+					out.print(str);
+					out.println();
+					arrList=new ArrayList();
+
 				}
-				resultList.add(arrList.get(0));
-				resultList.add(arrList.get(1));
-				resultList.add(arrList.get(2));
+			}
+		} catch (IOException e) {
+			// File writing/opening failed at some stage.
+		} finally {
+			try {
+				if (out != null) {
+					out.close(); // Will close bw and fw too
+				} else if (bw != null) {
+					bw.close(); // Will close fw too
+				} else if (fw != null) {
+					fw.close();
+				} else {
+					// Oh boy did it fail hard! :3
+				}
+			} catch (IOException e) {
+				// Closing the file writers failed for some obscure reason
 			}
 		}
-		return arrList;
+		return resultList;
 
 	}
-	
-	public  static List calculateDistanceForIndividualStringWithNode(NodeList nodeList, String inputString,List arrList){
-		XMLTO xmlto=new XMLTO();
+
+	public static List calculateDistanceForIndividualStringWithNode(
+			NodeList nodeList, String inputString, List arrList) {
+		XMLTO xmlto = new XMLTO();
 		for (int count = 0; count < nodeList.getLength(); count++) {
 			Node tempNode = nodeList.item(count);
 			// make sure it's element node.
@@ -117,52 +92,57 @@ public class ReadXMLFile {
 				// get node name and value
 				String nodeName = tempNode.getNodeName();
 				NamedNodeMap attributes = tempNode.getAttributes();
-				
-				int distance = LevenshteinDistanceCalculator.computeLevenshteinDistance(nodeName.toUpperCase(),inputString);
+
+				int distance = LevenshteinDistanceCalculator
+						.computeLevenshteinDistance(nodeName.toUpperCase(),
+								inputString);
 				xmlto.setNodeName(nodeName);
 				xmlto.setXmlStrVal(inputString);
 				xmlto.setDistance(distance);
 				arrList.add(xmlto);
-				//System.out.println("nodeName:::"+nodeName+"::::StrVal:::"+inputString+":::distance"+distance+":::Length::::"+attributes.getLength());
+				// System.out.println("nodeName:::"+nodeName+"::::StrVal:::"+inputString+":::distance"+distance+":::Length::::"+attributes.getLength());
 				// get the number of nodes in this map
 				int numAttrs = attributes.getLength();
 
 				for (int i = 0; i < numAttrs; i++) {
-					Attr attr = (Attr) attributes.item(i);					
+					Attr attr = (Attr) attributes.item(i);
 					String attrName = attr.getNodeName();
-					String attrValue = attr.getNodeValue();					
-					//System.out.println("Found attribute: " + attrName + " with value: " + attrValue);
-					arrList=calculateDistanceForIndividualStringWithNodeAttribute(attrName,inputString,arrList);
+					String attrValue = attr.getNodeValue();
+					// System.out.println("Found attribute: " + attrName +
+					// " with value: " + attrValue);
+					arrList = calculateDistanceForIndividualStringWithNodeAttribute(
+							attrName, inputString, arrList);
 				}
-				
+
 				if (tempNode.hasChildNodes()) { // loop again if has
 												// child nodes
-					arrList=calculateDistanceForIndividualStringWithNode(tempNode.getChildNodes(), inputString,arrList);
+					arrList = calculateDistanceForIndividualStringWithNode(
+							tempNode.getChildNodes(), inputString, arrList);
 				}
 
 			}
 		}
 		return arrList;
-		
+
 	}
-	
-	
-	public  static List calculateDistanceForIndividualStringWithNodeAttribute(String attrName, String inputString,List arrList){
-		XMLTO xmlto=new XMLTO();		
-		int distance = LevenshteinDistanceCalculator.computeLevenshteinDistance(attrName,inputString);
+
+	public static List calculateDistanceForIndividualStringWithNodeAttribute(
+			String attrName, String inputString, List arrList) {
+		XMLTO xmlto = new XMLTO();
+		int distance = LevenshteinDistanceCalculator
+				.computeLevenshteinDistance(attrName, inputString);
 		xmlto.setNodeName(attrName);
 		xmlto.setXmlStrVal(inputString);
 		xmlto.setDistance(distance);
 		arrList.add(xmlto);
-		//System.out.println("attrName:::"+attrName+"::::StrVal:::"+inputString+":::distance"+distance);
-				
-		
+		// System.out.println("attrName:::"+attrName+"::::StrVal:::"+inputString+":::distance"+distance);
+
 		return arrList;
-		
+
 	}
-	
-	 public static String printFirstPart(){
-	     StringBuffer sb=new StringBuffer();
+
+	public static String printFirstPart() {
+		StringBuffer sb = new StringBuffer();
 		sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
 		sb.append("<html>");
 		sb.append("<head>");
@@ -186,17 +166,17 @@ public class ReadXMLFile {
 		sb.append("<tr>");
 		sb.append("<th>Node Name In XML</th>");
 		sb.append("<th>Best Match</th>");
-		sb.append("<th>2 nd Best Match</th>");		
+		sb.append("<th>2 nd Best Match</th>");
 		sb.append("<th>3 rd Best Match</th>");
 		sb.append("</tr>");
 		sb.append("</thead>");
 		sb.append("<tbody>");
 		return sb.toString();
-		
+
 	}
-	
-	 public static String printLastPart(){
-		 StringBuffer sb=new StringBuffer();
+
+	public static String printLastPart() {
+		StringBuffer sb = new StringBuffer();
 		sb.append("</tbody>");
 		sb.append("</table>");
 		sb.append("</div>");
@@ -204,6 +184,5 @@ public class ReadXMLFile {
 		sb.append("</html>");
 		return sb.toString();
 	}
-	
 
 }
