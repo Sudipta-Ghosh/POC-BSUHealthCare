@@ -1,11 +1,30 @@
 package com.java.tcs.healthcare.algorithm;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LevenshteinDistanceCalculator.
+ */
 public class LevenshteinDistanceCalculator {
 
+	/**
+	 * Minimum.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 * @param c the c
+	 * @return the int
+	 */
 	private static int minimum(int a, int b, int c) {
 		return Math.min(Math.min(a, b), c);
 	}
 
+	/**
+	 * Compute levenshtein distance.
+	 *
+	 * @param str1 the str1
+	 * @param str2 the str2
+	 * @return the int
+	 */
 	public static int computeLevenshteinDistance(CharSequence str1,
 			CharSequence str2) {
 		int[][] distance = new int[str1.length() + 1][str2.length() + 1];

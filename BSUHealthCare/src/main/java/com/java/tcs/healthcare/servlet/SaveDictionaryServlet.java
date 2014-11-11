@@ -12,11 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import com.java.tcs.healthcare.properties.ReadProperties;
 import com.java.tcs.healthcare.properties.SaveProperies;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SaveDictionaryServlet.
+ */
 public class SaveDictionaryServlet extends HttpServlet {
 	
-	  private String message;  
+	  /** The message. */
+  	private String message;  
 
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException
+	  /* (non-Javadoc)
+  	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+  	 */
+  	public void doGet(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException
 	  {
 	      // Set response content type
 	      response.setContentType("text/html");
@@ -87,12 +95,20 @@ public class SaveDictionaryServlet extends HttpServlet {
 	      requestDispatcher.forward(request, response);
 	      
 	  }
-	  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	  
+  	/* (non-Javadoc)
+  	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+  	 */
+  	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		        throws ServletException, IOException{
 		  this.doGet(request, response);
 		  
 	  }
-	  public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	  
+  	/* (non-Javadoc)
+  	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+  	 */
+  	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		       // do something in here
 		  this.doGet(request, response);

@@ -26,8 +26,18 @@ import org.xml.sax.SAXException;
 
 import com.java.tcs.healthcare.vo.XMLTO;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XMLReader.
+ */
 public class XMLReader {
 
+	/**
+	 * Read xml attributes.
+	 *
+	 * @param xmlString the xml string
+	 * @return the string
+	 */
 	public static String readXMLAttributes(String xmlString) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
@@ -53,8 +63,7 @@ public class XMLReader {
 		List arrList = new ArrayList();
 		for (int i = 0; i < resultList.size(); i++) {
 			System.out.println("resultList----" + resultList.get(i));
-			arrList = ReadXMLFile.printNote(doc.getChildNodes(),
-					(String) resultList.get(i), arrList);
+		    ReadXMLFile.printNote(doc.getChildNodes(),(String) resultList.get(i));
 		}
 		BufferedReader br = null;
 
@@ -93,6 +102,11 @@ public class XMLReader {
 
 	}
 
+	/**
+	 * Fixed column.
+	 *
+	 * @return the list
+	 */
 	public static List fixedColumn() {
 		InputStream input = null;
 		String key = "";

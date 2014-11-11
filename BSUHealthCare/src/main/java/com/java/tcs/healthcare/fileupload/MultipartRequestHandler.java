@@ -16,10 +16,22 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.java.tcs.healthcare.vo.FileTO;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MultipartRequestHandler.
+ */
 public class MultipartRequestHandler {
 
 	
 
+	/**
+	 * Upload by java servlet api.
+	 *
+	 * @param request the request
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ServletException the servlet exception
+	 */
 	public static List<FileTO> uploadByJavaServletAPI(HttpServletRequest request) throws IOException, ServletException{
 		
 		List<FileTO> files = new LinkedList<FileTO>();
@@ -53,6 +65,14 @@ public class MultipartRequestHandler {
 		return files;
 	}
 	
+	/**
+	 * Upload by apache file upload.
+	 *
+	 * @param request the request
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ServletException the servlet exception
+	 */
 	public static List<FileTO> uploadByApacheFileUpload(HttpServletRequest request) throws IOException, ServletException{
 				
 		List<FileTO> files = new LinkedList<FileTO>();
@@ -116,6 +136,12 @@ public class MultipartRequestHandler {
 	
 	// this method is used to get file name out of request headers
 	// 
+	/**
+	 * Gets the filename.
+	 *
+	 * @param part the part
+	 * @return the filename
+	 */
 	private static String getFilename(Part part) {
 	    for (String cd : part.getHeader("content-disposition").split(";")) {
 	        if (cd.trim().startsWith("filename")) {

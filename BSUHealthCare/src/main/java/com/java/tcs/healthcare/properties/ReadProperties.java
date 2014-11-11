@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -52,12 +53,12 @@ public class ReadProperties {
 	            String keyName="";
 	 
 	            //Create Workbook instance holding reference to .xlsx file
-	            XSSFWorkbook workbook = new XSSFWorkbook(file);
-	            //org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(file);
+	            //XSSFWorkbook workbook = new XSSFWorkbook(file);
+	            org.apache.poi.ss.usermodel.Workbook workbook = WorkbookFactory.create(file);
 	 
 	            //Get first/desired sheet from the workbook
-	            XSSFSheet sheet = workbook.getSheetAt(0);
-	            //org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+	            //XSSFSheet sheet = workbook.getSheetAt(0);
+	            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
 	 
 	            //Iterate through each rows one by one
 	            Iterator<Row> rowIterator = sheet.iterator();
@@ -72,12 +73,16 @@ public class ReadProperties {
 	                    Cell cell = cellIterator.next();
 	                    //Check the cell type and format accordingly
 	                    switch (cell.getCellType()) 
-	                    {	                       
+	                    {	
+	                        case Cell.CELL_TYPE_BLANK:
+	                        	keyName="";                        	
 	                        case Cell.CELL_TYPE_STRING:	                 
 	                            if(cell.getColumnIndex()==0||(cell.getColumnIndex())%2==0){	                            	
 	                            	keyName=cell.getStringCellValue();
 	                            }else{
+	                            	if(keyName!=null && !keyName.equals("abc")){
 	                            	mapOut.put(keyName, cell.getStringCellValue());
+	                            	}
 	                            	keyName="";
 	                            	
 	                            }

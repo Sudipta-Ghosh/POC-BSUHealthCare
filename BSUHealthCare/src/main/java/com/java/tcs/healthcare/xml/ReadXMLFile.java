@@ -19,16 +19,24 @@ import com.java.tcs.healthcare.algorithm.LevenshteinDistanceCalculator;
 import com.java.tcs.healthcare.dao.SearchDictionaryDao;
 import com.java.tcs.healthcare.vo.XMLTO;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ReadXMLFile.
+ */
 public class ReadXMLFile {
-
-	static List arrList = new ArrayList();
-	static List resultList = new ArrayList();
-	static Map treemap = new TreeMap();
 
 	
 
-	public static List printNote(NodeList nodeList, String inputString,
-			List arrList) {
+	
+
+	/**
+	 * Prints the note.
+	 *
+	 * @param nodeList the node list
+	 * @param inputString the input string
+	 */
+	public static void printNote(NodeList nodeList, String inputString) {
+		List arrList=new ArrayList();
 		String resultString = SearchDictionaryDao
 				.searchDictionaryDAO(inputString.toUpperCase());
 		PrintWriter out = null;
@@ -45,19 +53,21 @@ public class ReadXMLFile {
 				arr = resultString.split(",");
 				for (int counter = 0; counter < arr.length; counter++) {
 					String str = "";
+					arrList=new ArrayList();
+					int count=0;
 					arrList = calculateDistanceForIndividualStringWithNode(
-							nodeList, arr[counter].toUpperCase(), arrList);
+							nodeList, arr[counter].toUpperCase(), arrList,count);
 					Collections.sort(arrList, new DistanceComparator());
 					XMLTO xmlTo = null;
 					for (int counter1 = 0; counter1 <= 2; counter1++) {
 						xmlTo = (XMLTO) arrList.get(counter1);
-						str = str+xmlTo.getNodeName() + ",";
+						str = str+xmlTo.getNodeName()+"_"+xmlTo.getDistance() + ",";
 
 					}
 					str = arr[counter].toUpperCase() + "," + str;
 					out.print(str);
 					out.println();
-					arrList=new ArrayList();
+				
 
 				}
 			}
@@ -78,21 +88,31 @@ public class ReadXMLFile {
 				// Closing the file writers failed for some obscure reason
 			}
 		}
-		return resultList;
 
 	}
 
+	/**
+	 * Calculate distance for individual string with node.
+	 *
+	 * @param nodeList the node list
+	 * @param inputString the input string
+	 * @param arrList the arr list
+	 * @param counter the counter
+	 * @return the list
+	 */
 	public static List calculateDistanceForIndividualStringWithNode(
-			NodeList nodeList, String inputString, List arrList) {
+			NodeList nodeList, String inputString, List arrList,int counter) {
 		XMLTO xmlto = new XMLTO();
-		for (int count = 0; count < nodeList.getLength(); count++) {
+		for (int count = counter; count < nodeList.getLength(); count++) {
+			counter++;
 			Node tempNode = nodeList.item(count);
 			// make sure it's element node.
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 				// get node name and value
 				String nodeName = tempNode.getNodeName();
+				System.out.println("ELEMENT_NODE---"+nodeName);
 				NamedNodeMap attributes = tempNode.getAttributes();
-
+ 
 				int distance = LevenshteinDistanceCalculator
 						.computeLevenshteinDistance(nodeName.toUpperCase(),
 								inputString);
@@ -117,7 +137,7 @@ public class ReadXMLFile {
 				if (tempNode.hasChildNodes()) { // loop again if has
 												// child nodes
 					arrList = calculateDistanceForIndividualStringWithNode(
-							tempNode.getChildNodes(), inputString, arrList);
+							tempNode.getChildNodes(), inputString, arrList,counter);
 				}
 
 			}
@@ -126,11 +146,20 @@ public class ReadXMLFile {
 
 	}
 
+	/**
+	 * Calculate distance for individual string with node attribute.
+	 *
+	 * @param attrName the attr name
+	 * @param inputString the input string
+	 * @param arrList the arr list
+	 * @return the list
+	 */
 	public static List calculateDistanceForIndividualStringWithNodeAttribute(
 			String attrName, String inputString, List arrList) {
 		XMLTO xmlto = new XMLTO();
+		System.out.println("attrName---"+attrName);
 		int distance = LevenshteinDistanceCalculator
-				.computeLevenshteinDistance(attrName, inputString);
+				.computeLevenshteinDistance(attrName.toUpperCase(), inputString);
 		xmlto.setNodeName(attrName);
 		xmlto.setXmlStrVal(inputString);
 		xmlto.setDistance(distance);
@@ -141,6 +170,11 @@ public class ReadXMLFile {
 
 	}
 
+	/**
+	 * Prints the first part.
+	 *
+	 * @return the string
+	 */
 	public static String printFirstPart() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">");
@@ -175,6 +209,11 @@ public class ReadXMLFile {
 
 	}
 
+	/**
+	 * Prints the last part.
+	 *
+	 * @return the string
+	 */
 	public static String printLastPart() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("</tbody>");
